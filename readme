@@ -1,0 +1,132 @@
+# HeatMPI
+
+Parallel 2D heat-equation solver in **C++ + MPI** with multiple domain-decomposition strategies.
+Great for learning/teaching halo exchanges, process topologies, and strong/weak scaling basics.
+
+---
+
+## Why this project?
+
+- Compare **1D row-wise** vs. **2D Cartesian** domain decompositions
+- Practice MPI collectives + point-to-point halo (ghost-cell) exchanges
+- Generate timing data and quick plots for speedup/efficiency
+
+> **Note:** `main.cpp` is a row-based baseline (more memory-efficient).  
+> `main2.cpp` uses an MPI **Cartesian grid** (theoretically more scalable) and is kept as-is to preserve a school submission; it has a known **ghost-cell/halo bug**. `main3.cpp` is an experimental variant. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Features
+
+- Finite-difference stencil for the 2D heat/diffusion equation
+- Rank-to-rank halo exchange with ghost cells
+- Optional hostfile-based cluster runs
+- Simple performance logging + plotting
+
+---
+
+## Repo layout
+```text
+.
+├─ main.cpp         # 1D row-wise decomposition (baseline)
+├─ main2.cpp        # 2D MPI Cartesian grid (known halo bug; kept for history)
+├─ main3.cpp        # Experimental variant
+├─ utils.h          # Helpers (allocation, indexing, init, timing, etc.)
+├─ Makefile         # Build targets
+├─ run.sh           # Example launcher (mpirun/mpiexec)
+├─ clust.sh         # Cluster helper (uses hostfile)
+├─ hostsfile        # Host list for multi-node runs
+├─ time.csv         # Sample timing output
+└─ plot.py          # Quick plotting for scaling results
+```
+
+
+---
+
+## Build
+
+### Prereqs
+- **MPI** (OpenMPI or MPICH)
+- **C++17** compiler (GCC/Clang)
+- **Python 3** (optional, for plots) + `matplotlib`
+
+### Commands
+
+```bash
+# Build the default (row-wise) version
+make            # or: make main
+
+# Build the Cartesian variant (has known halo bug)
+make main2
+
+# Build the experimental variant
+make main3
+
+
+mpic++ -O1 -std=c++17 -o heat_row main.cpp
+mpic++ -O1 -std=c++17 -o heat_cart main2.cpp
+```
+## Run
+
+### Local Test
+```bash
+mpirun -np 4 ./heat_row
+```
+
+### Muli-node (hostfile)
+
+```bash
+mpirun --hostfile hostsfile -np 16 ./heat_row
+```
+
+## Output & plotting
+
+Typical runs print timing to stdout and/or append to `time.csv`.\
+Use the helper to visualize basic scaling:
+
+```bash
+python3 plot.py
+# or, if the script expects an input path:
+python3 plot.py time.csv
+```
+
+The script produces a PNG showing speedup/efficiency vs. process count.
+
+---
+
+## How it works (high level)
+
+- Discretizes the 2D heat equation on a structured grid with a standard stencil.
+- Decomposes the global grid across ranks (rows or 2D blocks).
+- Exchanges ghost cells between neighbor ranks each iteration.
+- Measures wall time to assess parallel scaling.
+
+---
+
+## Known issues
+
+- ``** (Cartesian)**: kept intentionally with a **ghost/halo exchange bug** from the original course submission. Useful for demonstrating debugging of halo logic; fix by double-checking `MPI_Cart_shift` neighbors, send/recv ordering, and ghost-width consistency. ([GitHub](https://github.com/bnorthern42/HeatMPI))
+
+---
+
+## Roadmap (nice-to-haves)
+
+- Fix `main2.cpp` halo logic; add corner-case guards and asserts
+- Add CLI flags: `--nx`, `--ny`, `--steps`, `--alpha`, `--output`
+- Hybridize with **OpenMP** inside each rank
+- Optional **MPI-IO** to save field snapshots
+- Add unit tests for boundary/halo correctness
+
+---
+
+## Contributing
+
+PRs welcome—especially fixes for the Cartesian variant and CLI flags.\
+Please include before/after timing or a small test demonstrating correctness.
+
+---
+
+## License
+the unlicense
+
+
