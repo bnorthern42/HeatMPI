@@ -26,17 +26,18 @@ Great for learning/teaching halo exchanges, process topologies, and strong/weak 
 ---
 
 ## Repo layout
-.
-├─ main.cpp # 1D row-wise decomposition (baseline)
-├─ main2.cpp # 2D MPI Cartesian grid (known halo bug; kept for history)
-├─ main3.cpp # Experimental variant
-├─ utils.h # Helpers (allocation, indexing, init, timing, etc.)
-├─ Makefile # Build targets
-├─ run.sh # Example launcher (mpirun/mpiexec)
-├─ clust.sh # Cluster helper (uses hostfile)
-├─ hostsfile # Host list for multi-node runs
-├─ time.csv # Sample timing output
-└─ plot.py # Quick plotting for scaling results
+
+- `main.cpp` — 1D row-wise decomposition (baseline)
+- `main2.cpp` — 2D MPI Cartesian grid (known halo bug; kept for history)
+- `main3.cpp` — Experimental variant
+- `utils.h` — Helpers (allocation, indexing, init, timing, etc.)
+- `Makefile` — Build targets
+- `run.sh` — Example launcher (mpirun/mpiexec)
+- `clust.sh` — Cluster helper (uses hostfile)
+- `hostsfile` — Host list for multi-node runs
+- `time.csv` — Sample timing output
+- `plot.py` — Quick plotting for scaling results
+
 
 ---
 
