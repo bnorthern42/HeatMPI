@@ -1,0 +1,13 @@
+main is row based (more memory eff)
+
+main2 is cartesian based (more cpu eff, theorectically more scalable)
+
+
+
+## info
+
+This was a school project to do the standard heat equation in MPI, at the time,
+I submitted main2, but it has a 'slight' bug with the ghosting, I haven't changed it
+since then as I wanted to keep original. We were allowed to do anything MPI so,
+I did cartesian stuff, and even with some heartaches getting it to work, I'd do it again
+
