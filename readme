@@ -26,7 +26,7 @@ Great for learning/teaching halo exchanges, process topologies, and strong/weak 
 ---
 
 ## Repo layout
-```text
+<pre>
 .
 ├─ main.cpp         # 1D row-wise decomposition (baseline)
 ├─ main2.cpp        # 2D MPI Cartesian grid (known halo bug; kept for history)
@@ -38,7 +38,7 @@ Great for learning/teaching halo exchanges, process topologies, and strong/weak 
 ├─ hostsfile        # Host list for multi-node runs
 ├─ time.csv         # Sample timing output
 └─ plot.py          # Quick plotting for scaling results
-```
+</pre>
 
 
 ---
